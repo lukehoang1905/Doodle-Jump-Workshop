@@ -83,13 +83,24 @@ let platformY = canvasHeight / 2;
 function drawPlatforms() {
   for (let index = 0; index < platforms.length; index++) {
     const platform = platforms[index];
-    ctx.fillStyle = "rgba(156, 217, 107, 1)";
-    ctx.fillRect(
-      platform.platformX,
-      platform.platformY,
-      platformWidth,
-      platformHeight
-    );
+    //draw shape
+    // ctx.fillStyle = "rgba(156, 217, 107, 1)";
+    // ctx.fillRect(
+    //   platform.platformX,
+    //   platform.platformY,
+    //   platformWidth,
+    //   platformHeight
+    // );
+    //draw image
+    if (platformReady) {
+      ctx.drawImage(
+        platformImage,
+        platform.platformX,
+        platform.platformY,
+        platformWidth,
+        platformHeight
+      );
+    }
   }
 }
 
@@ -99,12 +110,23 @@ function drawPlatforms() {
 
 function drawCharacter() {
   ctx.fillStyle = "rgba(217,156,107, 1)";
-  ctx.fillRect(
-    character.characterX,
-    character.characterY,
-    characterWidth,
-    characterHeight
-  );
+  //shape
+  // ctx.fillRect(
+  //   character.characterX,
+  //   character.characterY,
+  //   characterWidth,
+  //   characterHeight
+  // );
+  //image
+  if (characterReady) {
+    ctx.drawImage(
+      characterImage,
+      character.characterX,
+      character.characterY,
+      characterWidth,
+      characterHeight
+    );
+  }
 }
 
 //step 3
@@ -121,17 +143,23 @@ let jumpTime = 60;
 let isGameOver = false;
 function update() {
   if (isGameOver === true) return;
-  if (37 in keysDown) {
+  if (37 in keysDown && characterX > characterWidth) {
     // Player is holding left key
+
     character.characterX -= 10;
   }
   if (39 in keysDown) {
     // Player is holding right key
     character.characterX += 10;
   }
-
-  //gameover logic
+  //border detection
+  if (character.characterX < -characterWidth) {
+    character.characterX = canvasWidth;
+  } else if (character.characterX > canvasWidth) {
+    character.characterX = -characterWidth / 2;
+  }
   if (character.characterY > canvasHeight) {
+    //gameover logic
     isGameOver = true;
   }
   // detection of the jump
@@ -156,7 +184,7 @@ function update() {
         score === 50
       ) {
         level++;
-        platform.speed += level / 3;
+        character.speed += level / 3;
       }
       if (score >= 60) {
         isGameOver = true;
@@ -167,7 +195,7 @@ function update() {
     character.characterY -= character.speed;
     jumpTime -= 1;
   } else {
-    character.characterY += character.speed;
+    character.characterY += character.speed * 1.25;
   }
   for (let index = 0; index < platforms.length; index++) {
     const platform = platforms[index];
@@ -175,7 +203,7 @@ function update() {
     if (platform.platformY >= canvasHeight) {
       platform.platformY = 0;
 
-      platform.speed = 1;
+      platform.speed += level / 3;
       platform.platformX = Math.floor(
         Math.random() * (canvasWidth - platformWidth)
       );
@@ -205,6 +233,36 @@ function setupKeyboardListeners() {
   );
 }
 setupKeyboardListeners();
+//Extras load image
+let characterImage, platformImage;
+let characterReady, platformReady;
+// Setup + load image
+function loadImages() {
+  //load platforms image
+  platformImage = new Image();
+  platformImage.onload = function () {
+    platformReady = true;
+  };
+  platformImage.src =
+    "https://raw.githubusercontent.com/kubowania/Doodle-Jump/master/platform.png";
+
+  // show the hero image
+  characterImage = new Image();
+  characterImage.onload = function () {
+    characterReady = true;
+  };
+  characterImage.src =
+    "https://raw.githubusercontent.com/JasonMize/coding-league-assets/master/doodle-jump-doodler.png";
+}
+
+function render() {
+  if (characterReady) {
+    ctx.drawImage(characterImage, 300, 310, 60, 60);
+  }
+  if (platformReady) {
+    ctx.drawImage(platformImage, 200, 110, 80, 15);
+  }
+}
 //3.2 introducing Main function
 function main() {
   //clear the canvas
@@ -216,6 +274,7 @@ function main() {
   document.getElementById("score").innerHTML = score;
   document.getElementById("level").innerHTML = level;
 }
+loadImages();
 main();
 //request animation frame
 let w = window;
