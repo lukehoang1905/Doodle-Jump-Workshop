@@ -1,0 +1,11 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+canvas {
+  background: url("https://www2.cs.duke.edu/courses/fall10/cps108/code/src/vooga/games/doodlejump/resources/images/space-background.png");
+  position: relative;
+}
+.ui {
+  display: flex;
+}
