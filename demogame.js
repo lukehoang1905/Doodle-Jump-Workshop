@@ -30,7 +30,7 @@ const initPlatforms = [
   {
     platformX: Math.floor(Math.random() * (canvasWidth - platformWidth)),
     platformY: 0,
-    speed: 1 + level / 2,
+    speed: 1,
   },
   {
     platformX: Math.floor(Math.random() * (canvasWidth - platformWidth)),
@@ -50,6 +50,11 @@ const initPlatforms = [
   {
     platformX: Math.floor(Math.random() * (canvasWidth - platformWidth)),
     platformY: 4 * gap,
+    speed: 1,
+  },
+  {
+    platformX: Math.floor(Math.random() * (canvasWidth - platformWidth)),
+    platformY: 5 * gap,
     speed: 1,
   },
 ];
@@ -78,7 +83,7 @@ let platformY = canvasHeight / 2;
 function drawPlatforms() {
   for (let index = 0; index < platforms.length; index++) {
     const platform = platforms[index];
-    ctx.fillStyle = "rgba(156, 217, 107, 0.7)";
+    ctx.fillStyle = "rgba(156, 217, 107, 1)";
     ctx.fillRect(
       platform.platformX,
       platform.platformY,
@@ -143,9 +148,18 @@ function update() {
       score++;
       //   platform.speed += 0.3;
       // console.log({ characterY, characterX, platform.platformX, platform.platformY });
-      if (score > 10 || score > 20 || score > 30 || score > 40 || score > 50) {
+      if (
+        score === 10 ||
+        score === 20 ||
+        score === 30 ||
+        score === 40 ||
+        score === 50
+      ) {
         level++;
         platform.speed += level / 3;
+      }
+      if (score >= 60) {
+        isGameOver = true;
       }
     }
   }
@@ -160,6 +174,7 @@ function update() {
     platform.platformY += platform.speed;
     if (platform.platformY >= canvasHeight) {
       platform.platformY = 0;
+
       platform.speed = 1;
       platform.platformX = Math.floor(
         Math.random() * (canvasWidth - platformWidth)
@@ -199,6 +214,7 @@ function main() {
   drawPlatforms();
   drawCharacter();
   document.getElementById("score").innerHTML = score;
+  document.getElementById("level").innerHTML = level;
 }
 main();
 //request animation frame

@@ -1,11 +1,19 @@
 * {
   padding: 0;
   margin: 0;
+  height: 100vh;
 }
 canvas {
-  background: url("https://www2.cs.duke.edu/courses/fall10/cps108/code/src/vooga/games/doodlejump/resources/images/space-background.png");
+  background: none;
   position: relative;
+  border: 1px solid rgba(200, 200, 200, 0.9);
 }
 .ui {
   display: flex;
+  justify-content: space-around;
+  background: url("./uiBack.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
