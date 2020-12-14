@@ -176,17 +176,11 @@ function update() {
       score++;
       //   platform.speed += 0.3;
       // console.log({ characterY, characterX, platform.platformX, platform.platformY });
-      if (
-        score === 10 ||
-        score === 20 ||
-        score === 30 ||
-        score === 40 ||
-        score === 50
-      ) {
+      if (score === 15 || score === 25 || score === 40 || score === 55) {
         level++;
         character.speed += level / 3;
       }
-      if (score >= 60) {
+      if (score >= 100) {
         isGameOver = true;
       }
     }
@@ -255,14 +249,6 @@ function loadImages() {
     "https://raw.githubusercontent.com/JasonMize/coding-league-assets/master/doodle-jump-doodler.png";
 }
 
-function render() {
-  if (characterReady) {
-    ctx.drawImage(characterImage, 300, 310, 60, 60);
-  }
-  if (platformReady) {
-    ctx.drawImage(platformImage, 200, 110, 80, 15);
-  }
-}
 //3.2 introducing Main function
 function main() {
   //clear the canvas
