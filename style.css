@@ -18,3 +18,17 @@ canvas {
   -o-background-size: cover;
   background-size: cover;
 }
+.intro {
+  width: 118px;
+  height: 38px;
+  background-image: url("./startLogo.png");
+  position: absolute;
+  align-self: center;
+}
+.reset {
+  width: 100px;
+  height: 100px;
+  background-image: url("./resetButton.png");
+  position: absolute;
+  align-self: center;
+}

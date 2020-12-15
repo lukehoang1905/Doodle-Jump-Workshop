@@ -1,5 +1,6 @@
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
+const ui = document.querySelector(".ui");
 
 /** IMPORTANT MEASUREMENTS
  * Canvas width:"500" height="600"
@@ -14,8 +15,8 @@ const platformWidth = 80;
 const platformHeight = 15;
 const gap = canvasHeight / 5;
 /** end of Important Measurements */
-let characterX = Math.round(canvasWidth / 2);
-let characterY = Math.round(canvasHeight / 3);
+// let characterX = Math.round(canvasWidth / 2);
+// let characterY = Math.round(canvasHeight / 3);
 
 // Minh
 
@@ -61,25 +62,6 @@ const initPlatforms = [
 let character = initCharacter;
 let platforms = initPlatforms;
 
-function restart() {
-  character = initCharacter;
-  platforms = initPlatforms;
-}
-
-//Step 1:
-//let draw a green platform
-//  - cordinates x= 1/2 canvasWidth, y= 1/2canvasHeight
-// let platformX = Math.random() * canvasWidth;
-// let platformY = Math.random() * canvasHeight;
-// //  - color: green,
-// ctx.fillStyle = "rgba(156, 217, 107, 0.7)";
-// //  - draw the platform
-// ctx.fillRect(platformX, platformY, platformWidth, platformHeight);
-
-//Step 1.1
-//let draw multiple platform
-let platformX = canvasWidth / 2;
-let platformY = canvasHeight / 2;
 function drawPlatforms() {
   for (let index = 0; index < platforms.length; index++) {
     const platform = platforms[index];
@@ -104,10 +86,6 @@ function drawPlatforms() {
   }
 }
 
-//step 2
-//let draw our character box
-//  - coordinates x = 1/2 canvasWidth, y = 1/3 canvasHeight
-
 function drawCharacter() {
   ctx.fillStyle = "rgba(217,156,107, 1)";
   //shape
@@ -129,21 +107,23 @@ function drawCharacter() {
   }
 }
 
-//step 3
-//let move our character
-//Step 3.1 the logic to make your character move
-// if (37 in keysDown) { // Player is holding left key
-//     heroX -= 10;
-//   }
-//   if (39 in keysDown) { // Player is holding right key
-//     heroX += 10;
-//   }
-//Step 3.2 introducing Update function
 let jumpTime = 60;
 let isGameOver = false;
+
+function intro() {
+  let button = document.createElement("button");
+  ui.appendChild(button);
+  button.classList.add("intro");
+  button.addEventListener("click", function () {
+    main();
+    button.style.display = "none";
+  });
+}
+
 function update() {
   if (isGameOver === true) return;
-  if (37 in keysDown && characterX > characterWidth) {
+
+  if (37 in keysDown) {
     // Player is holding left key
 
     character.characterX -= 10;
@@ -261,7 +241,7 @@ function main() {
   document.getElementById("level").innerHTML = level;
 }
 loadImages();
-main();
+intro();
 //request animation frame
 let w = window;
 requestAnimationFrame =
@@ -269,3 +249,12 @@ requestAnimationFrame =
   w.webkitRequestAnimationFrame ||
   w.msRequestAnimationFrame ||
   w.mozRequestAnimationFrame;
+function reset() {
+  let button = document.createElement("button");
+  ui.appendChild(button);
+  button.classList.add("reset");
+  button.addEventListener("click", function () {
+    character = initCharacter;
+    platforms = initPlatforms;
+  });
+}
